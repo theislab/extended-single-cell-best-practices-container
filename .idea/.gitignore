@@ -1,4 +1,9 @@
 # Default ignored files
 /shelf/
 /workspace.xml
-/.idea/
+/extended-single-cell-best-practices-container.iml
+/misc.xml
+/modules.xml
+/inspectionProfiles/profiles_settings.xml
+/inspectionProfiles/Project_Default.xml
+/vcs.xml
