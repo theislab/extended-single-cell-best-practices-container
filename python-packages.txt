@@ -16,6 +16,7 @@ openpyxl
 tensorflow
 tensorflow-probability
 episcanpy
-cellrank[krylov]
+cellrank
+#cellrank[krylov]
 sfaira
 pandas==1.2.5

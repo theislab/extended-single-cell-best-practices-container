@@ -5,3 +5,6 @@ todo:
 - set correct trigeres for workflows
 - add documentation
 - add container tests?
+- don't build r and python from scratch
+- add petsc ans slepc back for cellrank
+- 
