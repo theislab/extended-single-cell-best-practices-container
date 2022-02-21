@@ -53,8 +53,8 @@ RUN rm -rf /opt/R/R-4.1.2
 ENV PATH="/opt/R/bin:${PATH}"
 ENV LD_LIBRARY_PATH="/opt/R/lib/R/lib:${LD_LIBRARY_PATH}"
 
-RUN Rscript -e "update.packages(ask=FALSE, repos='https://ftp.gwdg.de/pub/misc/cran/')"
-RUN Rscript -e "install.packages(c('devtools', 'gam', 'RColorBrewer', 'BiocManager', 'IRkernel'), repos='https://ftp.gwdg.de/pub/misc/cran/')"
+RUN Rscript -e "update.packages(ask=FALSE, repos='https://mirror.dogado.de/cran/')"
+RUN Rscript -e "install.packages(c('devtools', 'gam', 'RColorBrewer', 'BiocManager', 'IRkernel'), repos='https://mirror.dogado.de/cran/')"
 RUN Rscript -e "devtools::install_github(c('patzaw/neo2R', 'patzaw/BED'))"
 RUN Rscript -e "BiocManager::install(c('scran','MAST','monocle','ComplexHeatmap','limma','slingshot','clusterExperiment','DropletUtils'), version = '3.14')"
 RUN Rscript -e 'writeLines(capture.output(sessionInfo()), "../package_versions_r.txt")' --default-packages=scran,RColorBrewer,slingshot,monocle,gam,clusterExperiment,ggplot2,plyr,MAST,DropletUtils,IRkernel
@@ -74,7 +74,7 @@ RUN Rscript -e "BiocManager::install(c('edgeR'), version = '3.14')"
 # Fabi's section
 RUN apt-get install -y --no-install-recommends freebayes parallel
 RUN pip install --no-cache-dir -U pegasuspy vireoSNP PyVCF scSplit
-RUN Rscript -e "install.packages(c('Seurat'), repos='https://ftp.gwdg.de/pub/misc/cran/')"
+RUN Rscript -e "install.packages(c('Seurat'), repos='https://mirror.dogado.de/cran/')"
 ## htslib
 WORKDIR /opt/htslib
 RUN wget https://github.com/samtools/htslib/releases/download/1.14/htslib-1.14.tar.bz2
