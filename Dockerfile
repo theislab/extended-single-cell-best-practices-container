@@ -1,7 +1,7 @@
 FROM python:3.8.12-bullseye
 
 # Install system libraries required for python and R installations
-RUN apt-get update && apt-get install -y --no-install-recommends build-essential apt-utils ca-certificates zlib1g-dev gfortran locales libxml2-dev libcurl4-openssl-dev libssl-dev libzmq3-dev libreadline6-dev xorg-dev libcairo-dev libpango1.0-dev libbz2-dev liblzma-dev libffi-dev libsqlite3-dev libopenmpi-dev libhdf5-dev libjpeg-dev libblas-dev liblapack-dev libpcre2-dev libgit2-dev libgmp-dev libgsl-dev tcl-dev tk-dev libopenblas-base libdeflate-dev
+RUN apt-get update && apt-get install -y --no-install-recommends build-essential apt-utils ca-certificates zlib1g-dev gfortran locales libxml2-dev libcurl4-openssl-dev libssl-dev libzmq3-dev libreadline6-dev xorg-dev libcairo-dev libpango1.0-dev libbz2-dev liblzma-dev libffi-dev libsqlite3-dev libopenmpi-dev libhdf5-dev libjpeg-dev libblas-dev liblapack-dev libpcre2-dev libgit2-dev libgmp-dev libgsl-dev tcl-dev tk-dev libopenblas-base
 
 # Install common linux tools
 RUN apt-get update && apt-get install -y --no-install-recommends htop less nano vim emacs
@@ -40,24 +40,15 @@ RUN pip install --no-cache-dir -U jupyter-book scvi-tools session-info bbknn sci
 RUN apt-get install -y --no-install-recommends r-bioc-edger
 
 # Fabi's section
-RUN apt-get install -y --no-install-recommends freebayes parallel
+RUN apt-get install -y --no-install-recommends freebayes parallel libhts-dev
 RUN pip install --no-cache-dir -U pegasuspy vireoSNP PyVCF scSplit
 RUN apt-get install -y --no-install-recommends r-cran-seurat
-## htslib
-WORKDIR /opt/htslib
-RUN wget https://github.com/samtools/htslib/releases/download/1.14/htslib-1.14.tar.bz2
-RUN tar jxfv htslib-1.14.tar.bz2 && rm htslib-1.14.tar.bz2
-WORKDIR /opt/htslib/htslib-1.14
-RUN ./configure --prefix=/opt/htslib/
-RUN make -j 3 && make install
-WORKDIR /opt/htslib
-RUN rm -rf /opt/htslib/htslib-1.14
 ## cellsnp-lite (requires htslib)
 WORKDIR /opt/cellsnp
 RUN git clone https://github.com/single-cell-genetics/cellsnp-lite.git
 WORKDIR /opt/cellsnp/cellsnp-lite
 RUN autoreconf -iv
-RUN ./configure --with-htslib=/opt/htslib --prefix=/opt/cellsnp/
+RUN ./configure --prefix=/opt/cellsnp/
 RUN make -j 3 && make install
 WORKDIR /opt/cellsnp
 RUN rm -rf /opt/cellsnp/cellsnp-lite
@@ -66,7 +57,7 @@ ENV PATH="/opt/cellsnp/bin:${PATH}"
 WORKDIR /opt/popscle
 RUN git clone https://github.com/statgen/popscle.git
 WORKDIR /opt/popscle/popscle/build
-RUN cmake -DHTS_INCLUDE_DIRS=/opt/htslib/include/  -DHTS_LIBRARIES=/opt/htslib/lib/libhts.a --install-prefix=/opt/popscle/ ..
+RUN cmake --install-prefix=/opt/popscle/ ..
 RUN make -j 3 && make install
 WORKDIR /opt/popscle
 RUN rm -rf /opt/popscle/popscle
