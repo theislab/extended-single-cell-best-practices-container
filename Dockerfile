@@ -1,7 +1,7 @@
 FROM python:3.8.12-bullseye
 
 # Install system libraries required for python and R installations
-RUN apt-get update && apt-get install -y --no-install-recommends build-essential apt-utils ca-certificates zlib1g-dev gfortran locales libxml2-dev libcurl4-openssl-dev libssl-dev libzmq3-dev libreadline6-dev xorg-dev libcairo-dev libpango1.0-dev libbz2-dev liblzma-dev libffi-dev libsqlite3-dev libopenmpi-dev libhdf5-dev libjpeg-dev libblas-dev liblapack-dev libpcre2-dev libgit2-dev libgmp-dev libgsl-dev tcl-dev tk-dev
+RUN apt-get update && apt-get install -y --no-install-recommends build-essential apt-utils ca-certificates zlib1g-dev gfortran locales libxml2-dev libcurl4-openssl-dev libssl-dev libzmq3-dev libreadline6-dev xorg-dev libcairo-dev libpango1.0-dev libbz2-dev liblzma-dev libffi-dev libsqlite3-dev libopenmpi-dev libhdf5-dev libjpeg-dev libblas-dev liblapack-dev libpcre2-dev libgit2-dev libgmp-dev libgsl-dev tcl-dev tk-dev libopenblas-base
 
 # Install common linux tools
 RUN apt-get update && apt-get install -y --no-install-recommends htop less nano vim emacs
@@ -42,7 +42,7 @@ RUN apt-get install -y --no-install-recommends r-bioc-edger
 # Fabi's section
 RUN apt-get install -y --no-install-recommends freebayes parallel
 RUN pip install --no-cache-dir -U pegasuspy vireoSNP PyVCF scSplit
-RUN apt-get install -y --no-install-recommendsr-cran-seurat
+RUN apt-get install -y --no-install-recommends r-cran-seurat
 ## htslib
 WORKDIR /opt/htslib
 RUN wget https://github.com/samtools/htslib/releases/download/1.14/htslib-1.14.tar.bz2
