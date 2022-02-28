@@ -1,33 +1,12 @@
-FROM debian:11
-
-ENV DEBIAN_FRONTEND=noninteractive
+FROM python:3.8.12-bullseye
 
 # Install system libraries required for python and R installations
 RUN apt-get update && apt-get install -y --no-install-recommends build-essential apt-utils ca-certificates zlib1g-dev gfortran locales libxml2-dev libcurl4-openssl-dev libssl-dev libzmq3-dev libreadline6-dev xorg-dev libcairo-dev libpango1.0-dev libbz2-dev liblzma-dev libffi-dev libsqlite3-dev libopenmpi-dev libhdf5-dev libjpeg-dev libblas-dev liblapack-dev libpcre2-dev libgit2-dev libgmp-dev libgsl-dev tcl-dev tk-dev
 
 # Install common linux tools
-RUN apt-get update && apt-get install -y --no-install-recommends wget curl htop less nano vim emacs git
+RUN apt-get update && apt-get install -y --no-install-recommends htop less nano vim emacs
 
-# Configure default locale
-RUN echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen \
-    && locale-gen en_US.utf8 \
-    && /usr/sbin/update-locale LANG=en_US.UTF-8
-
-# Download and compile python from source
-WORKDIR /opt/python
-RUN wget https://www.python.org/ftp/python/3.8.12/Python-3.8.12.tgz
-RUN tar zxfv Python-3.8.12.tgz && rm Python-3.8.12.tgz
-
-WORKDIR /opt/python/Python-3.8.12
-RUN ./configure --enable-optimizations --with-lto --prefix=/opt/python/
-RUN make -j 3 && make install
-
-WORKDIR /opt/python
-RUN rm -rf /opt/python/Python-3.8.12
-RUN ln -s /opt/python/bin/python3 /opt/python/bin/python
-RUN ln -s /opt/python/bin/pip3 /opt/python/bin/pip
-ENV PATH="/opt/python/bin:${PATH}"
-
+# Install python packages
 COPY python-packages.txt /opt/python/python-packages.txt
 RUN pip install --no-cache-dir -U pip wheel setuptools==57.5 cmake
 RUN pip install --no-cache-dir -r /opt/python/python-packages.txt
@@ -39,22 +18,13 @@ RUN curl -fsSL https://deb.nodesource.com/setup_16.x | bash -
 RUN apt-get install -y --no-install-recommends nodejs
 RUN jupyter labextension install @aquirdturtle/collapsible_headings @jupyterlab/toc #jupyterlab-execute-time
 
-# Download and compile R from source
-WORKDIR /opt/R
-RUN wget https://cran.rstudio.com/src/base/R-4/R-4.1.2.tar.gz
-RUN tar xvfz R-4.1.2.tar.gz && rm R-4.1.2.tar.gz
-
-WORKDIR /opt/R/R-4.1.2
-RUN ./configure --enable-R-shlib --with-cairo --with-libpng --with-tcltk --prefix=/opt/R/
-RUN make -j 3 && make install
-
-WORKDIR /opt/R
-RUN rm -rf /opt/R/R-4.1.2
-ENV PATH="/opt/R/bin:${PATH}"
-ENV LD_LIBRARY_PATH="/opt/R/lib/R/lib:${LD_LIBRARY_PATH}"
+# Install R
+RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-key '95C0FAF38DB3CCAD0C080A7BDC78B2DDEABC47B7'
+RUN echo "deb http://cloud.r-project.org/bin/linux/debian bullseye-cran40/" | tee -a /etc/apt/sources.list
+RUN apt-get update && apt-get install -y --no-install-recommends r-base-dev
 
 RUN Rscript -e "update.packages(ask=FALSE, repos='https://mirror.dogado.de/cran/')"
-RUN Rscript -e "install.packages(c('devtools', 'gam', 'RColorBrewer', 'BiocManager', 'IRkernel'), repos='https://mirror.dogado.de/cran/')"
+RUN Rscript -e "install.packages(c('devtools', 'gam', 'RColorBrewer', 'BiocManager', 'IRkernel'), repos='https://mirror.dogado.de/cran/q')"
 RUN Rscript -e "devtools::install_github(c('patzaw/neo2R', 'patzaw/BED'))"
 RUN Rscript -e "BiocManager::install(c('scran','MAST','monocle','ComplexHeatmap','limma','slingshot','clusterExperiment','DropletUtils'), version = '3.14')"
 RUN Rscript -e 'writeLines(capture.output(sessionInfo()), "../package_versions_r.txt")' --default-packages=scran,RColorBrewer,slingshot,monocle,gam,clusterExperiment,ggplot2,plyr,MAST,DropletUtils,IRkernel
