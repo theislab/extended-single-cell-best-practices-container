@@ -18,15 +18,13 @@ RUN curl -fsSL https://deb.nodesource.com/setup_16.x | bash -
 RUN apt-get install -y --no-install-recommends nodejs
 RUN jupyter labextension install @aquirdturtle/collapsible_headings @jupyterlab/toc #jupyterlab-execute-time
 
-# Install R
+# Install R and packages (precompiled if possible)
 RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-key '95C0FAF38DB3CCAD0C080A7BDC78B2DDEABC47B7'
 RUN echo "deb http://cloud.r-project.org/bin/linux/debian bullseye-cran40/" | tee -a /etc/apt/sources.list
 RUN apt-get update && apt-get install -y --no-install-recommends r-base-dev=4.1.2-1~bullseyecran.0
-
-RUN Rscript -e "update.packages(ask=FALSE, repos='https://ftp.fau.de/cran/')"
-RUN Rscript -e "install.packages(c('devtools', 'gam', 'RColorBrewer', 'BiocManager', 'IRkernel'), repos='https://ftp.fau.de/cran/')"
-RUN Rscript -e "devtools::install_github(c('patzaw/neo2R', 'patzaw/BED'))"
-RUN Rscript -e "BiocManager::install(c('scran','MAST','monocle','ComplexHeatmap','limma','slingshot','clusterExperiment','DropletUtils'), version = '3.14')"
+RUN apt-get install -y --no-install-recommends r-cran-devtools r-cran-gam r-cran-rcolorbrewer r-cran-biocmanager r-cran-irkernel
+RUN apt-get install -y --no-install-recommends r-bioc-scran r-bioc-monocle r-bioc-complexheatmap r-bioc-limma r-bioc-dropletutils
+RUN Rscript -e "BiocManager::install(c('MAST','slingshot','clusterExperiment'), version = '3.14')"
 RUN Rscript -e 'writeLines(capture.output(sessionInfo()), "../package_versions_r.txt")' --default-packages=scran,RColorBrewer,slingshot,monocle,gam,clusterExperiment,ggplot2,plyr,MAST,DropletUtils,IRkernel
 
 # Install python-R interoperability packages
@@ -39,12 +37,12 @@ RUN Rscript -e "IRkernel::installspec(user = FALSE)"
 # Python
 RUN pip install --no-cache-dir -U jupyter-book scvi-tools session-info bbknn scib
 # R
-RUN Rscript -e "BiocManager::install(c('edgeR'), version = '3.14')"
+RUN apt-get install -y --no-install-recommends r-bioc-edger
 
 # Fabi's section
 RUN apt-get install -y --no-install-recommends freebayes parallel
 RUN pip install --no-cache-dir -U pegasuspy vireoSNP PyVCF scSplit
-RUN Rscript -e "install.packages(c('Seurat'), repos='https://ftp.fau.de/cran/')"
+RUN apt-get install -y --no-install-recommendsr-cran-seurat
 ## htslib
 WORKDIR /opt/htslib
 RUN wget https://github.com/samtools/htslib/releases/download/1.14/htslib-1.14.tar.bz2
