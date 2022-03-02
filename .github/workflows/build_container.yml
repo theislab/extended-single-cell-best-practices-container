@@ -23,9 +23,9 @@ jobs:
       -
         name: Build and run container
         run: |
-          docker build . -t ghcr.io/theislab/sc-book:latest
-          docker run ghcr.io/theislab/sc-book:latest
+          docker build . -t ghcr.io/theislab/extended-single-cell-best-practices-container:latest
+          docker run ghcr.io/theislab/extended-single-cell-best-practices-container:latest
       -
         name: Push container to ghcr.io
         run: |
-          docker push ghcr.io/theislab/sc-book:latest
+          docker push ghcr.io/theislab/extended-single-cell-best-practices-container:latest
