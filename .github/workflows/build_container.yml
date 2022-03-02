@@ -17,15 +17,15 @@ jobs:
       -
         name: Login to container registry
         run: |
-          echo $CONTAINER_TOKEN | docker login ghcr.io -u le-ander --password-stdin
+          echo $CONTAINER_TOKEN | docker login ghcr.io -u theislab --password-stdin
         env:
           CONTAINER_TOKEN: ${{ secrets.CONTAINER_TOKEN }}
       -
         name: Build and run container
         run: |
-          docker build . -t ghcr.io/le-ander/sc-book:latest
-          docker run ghcr.io/le-ander/sc-book:latest
+          docker build . -t ghcr.io/theislab/sc-book:latest
+          docker run ghcr.io/theislab/sc-book:latest
       -
         name: Push container to ghcr.io
         run: |
-          docker push ghcr.io/le-ander/sc-book:latest
+          docker push ghcr.io/theislab/sc-book:latest
