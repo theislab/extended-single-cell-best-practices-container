@@ -1,3 +1,5 @@
+LABEL org.opencontainers.image.source="https://github.com/theislab/extended-single-cell-best-practices-container"
+
 FROM python:3.8.12-bullseye
 
 # Install system libraries required for python and R installations
