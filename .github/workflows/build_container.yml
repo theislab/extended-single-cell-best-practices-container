@@ -8,21 +8,24 @@ on:
 jobs:
   docker:
     runs-on: ubuntu-latest
+    if: "!contains(github.event.head_commit.message, '[skip ci]') && !contains(github.event.head_commit.message, '[ci skip]')"
+
     steps:
       -
         name: Checkout
         uses: actions/checkout@v2
-    - name: Build the hello-world Docker image
-      run: |
-        echo $CONTAINER_TOKEN | docker login ghcr.io -u le-ander --password-stdin
-      env:
-        CONTAINER_TOKEN: ${{ secrets.CONTAINER_TOKEN }}
-
-    - name: Build and run container
-      run: |
-        docker build . -t ghcr.io/le-ander/sc-book:latest
-        docker run ghcr.io/le-ander/sc-book:latest
-
-    - name: Push container to ghcr.io
-      run: |
-        docker push ghcr.io/le-ander/sc-book:latest
+      -
+        name: Login to container registry
+        run: |
+          echo $CONTAINER_TOKEN | docker login ghcr.io -u le-ander --password-stdin
+        env:
+          CONTAINER_TOKEN: ${{ secrets.CONTAINER_TOKEN }}
+      -
+        name: Build and run container
+        run: |
+          docker build . -t ghcr.io/le-ander/sc-book:latest
+          docker run ghcr.io/le-ander/sc-book:latest
+      -
+        name: Push container to ghcr.io
+        run: |
+          docker push ghcr.io/le-ander/sc-book:latest
