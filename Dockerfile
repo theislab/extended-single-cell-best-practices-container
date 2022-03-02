@@ -1,4 +1,4 @@
-FROM python:3.8.12-bullseye
+FROM python:3.8.12-slim-bullseye
 
 LABEL org.opencontainers.image.source="https://github.com/theislab/extended-single-cell-best-practices-container"
 
