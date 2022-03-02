@@ -1,6 +1,6 @@
-LABEL org.opencontainers.image.source="https://github.com/theislab/extended-single-cell-best-practices-container"
-
 FROM python:3.8.12-bullseye
+
+LABEL org.opencontainers.image.source="https://github.com/theislab/extended-single-cell-best-practices-container"
 
 # Install system libraries required for python and R installations
 RUN apt-get update && apt-get install -y --no-install-recommends build-essential apt-utils ca-certificates zlib1g-dev gfortran locales libxml2-dev libcurl4-openssl-dev libssl-dev libzmq3-dev libreadline6-dev xorg-dev libcairo-dev libpango1.0-dev libbz2-dev liblzma-dev libffi-dev libsqlite3-dev libopenmpi-dev libhdf5-dev libjpeg-dev libblas-dev liblapack-dev libpcre2-dev libgit2-dev libgmp-dev libgsl-dev tcl-dev tk-dev libopenblas-base
