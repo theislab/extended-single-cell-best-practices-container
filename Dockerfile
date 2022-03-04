@@ -61,7 +61,7 @@ WORKDIR /opt/popscle
 RUN git clone https://github.com/statgen/popscle.git
 WORKDIR /opt/popscle/popscle/build
 RUN cmake --install-prefix=/opt/popscle/ ..
-RUN make -j 3 && make install
+RUN make -j 3 && make instal
 WORKDIR /opt/popscle
 RUN rm -rf /opt/popscle/popscle
 ENV PATH="/opt/popscle/bin:${PATH}"
