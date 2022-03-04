@@ -20,4 +20,7 @@ jobs:
         run: |
           echo $VERSION_TAG
         env:
-          VERSION_TAG: ${{ steps.branch_name.outputs.SOURCE_NAME }}
+          VERSION_TAG: ${{ steps.get_version.outputs.VERSION }}
+      -
+        name: tag number
+        run: echo ${{ github.event.release.tag_name }}
