@@ -15,17 +15,12 @@ jobs:
         name: Checkout
         uses: actions/checkout@v2
       -
-        name: Login to container registry
+        name: Build base image
         run: |
-          echo $CONTAINER_TOKEN | docker login ghcr.io -u theislab --password-stdin
+          echo $SOURCE_NAME
+          echo $SOURCE_BRANCH
+          echo $SOURCE_TAG
         env:
-          CONTAINER_TOKEN: ${{ secrets.CONTAINER_TOKEN }}
-      -
-        name: Build and run container
-        run: |
-          docker build . -t ghcr.io/theislab/extended-single-cell-best-practices-container:latest
-          docker run ghcr.io/theislab/extended-single-cell-best-practices-container:latest
-      -
-        name: Push container to ghcr.io
-        run: |
-          docker push ghcr.io/theislab/extended-single-cell-best-practices-container:latest
+          SOURCE_NAME: ${{ steps.branch_name.outputs.SOURCE_NAME }}
+          SOURCE_BRANCH: ${{ steps.branch_name.outputs.SOURCE_BRANCH }}
+          SOURCE_TAG: ${{ steps.branch_name.outputs.SOURCE_TAG }}

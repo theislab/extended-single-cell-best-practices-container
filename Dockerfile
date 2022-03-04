@@ -1,5 +1,6 @@
 FROM python:3.8.12-bullseye
 
+LABEL org.opencontainers.image.description="Container built by Theislab for streamlining the build process of the extended single-cell best-practices book."
 LABEL org.opencontainers.image.source="https://github.com/theislab/extended-single-cell-best-practices-container"
 
 # Install system libraries required for python and R installations
