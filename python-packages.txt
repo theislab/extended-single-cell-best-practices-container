@@ -19,4 +19,7 @@ episcanpy
 cellrank
 #cellrank[krylov]
 sfaira
+mudatasets
+pysam
+scvi-tools
 pandas==1.2.5
