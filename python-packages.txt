@@ -22,6 +22,5 @@ sfaira
 muon
 mudata
 mudatasets
-pysam
 scvi-tools
 pandas==1.2.5
