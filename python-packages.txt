@@ -19,6 +19,8 @@ episcanpy
 cellrank
 #cellrank[krylov]
 sfaira
+muon
+mudata
 mudatasets
 pysam
 scvi-tools
