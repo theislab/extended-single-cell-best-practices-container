@@ -25,6 +25,7 @@ RUN jupyter labextension install @aquirdturtle/collapsible_headings @jupyterlab/
 RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-key '95C0FAF38DB3CCAD0C080A7BDC78B2DDEABC47B7'
 RUN echo "deb http://cloud.r-project.org/bin/linux/debian bullseye-cran40/" | tee -a /etc/apt/sources.list
 RUN apt-get update && apt-get install -y --no-install-recommends r-base-core=4.1.2-1~bullseyecran.0 r-base-dev=4.1.2-1~bullseyecran.0
+RUN apt-mark hold r-base-core
 RUN apt-get install -y --no-install-recommends r-cran-devtools r-cran-gam r-cran-rcolorbrewer r-cran-biocmanager r-cran-irkernel r-cran-lme4
 RUN apt-get install -y --no-install-recommends r-bioc-scran r-bioc-monocle r-bioc-complexheatmap r-bioc-limma r-bioc-dropletutils
 RUN Rscript -e "BiocManager::install(c('MAST','slingshot','clusterExperiment'), version = '3.14')"
