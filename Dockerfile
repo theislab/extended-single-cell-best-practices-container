@@ -12,7 +12,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends htop less nano 
 # Install python packages
 COPY python-packages.txt /opt/python/python-packages.txt
 RUN pip install --no-cache-dir -U pip wheel setuptools==57.5 cmake
-RUN pip install --no-cache-dir -r /opt/python/python-packages.txt
+RUN pip install --no-cache-dir --use-deprecated=legacy-resolver -r /opt/python/python-packages.txt
 RUN jupyter contrib nbextension install --system
 RUN jupyter nbextension enable --py widgetsnbextension
 
