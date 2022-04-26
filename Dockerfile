@@ -12,7 +12,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends htop less nano 
 # Install python packages
 COPY python-packages.txt /opt/python/python-packages.txt
 RUN pip install --no-cache-dir -U pip wheel setuptools==57.5 cmake
-RUN pip install --no-cache-dir -r /opt/python/python-packages.txt
+RUN pip install --no-cache-dir --use-deprecated=legacy-resolver -r /opt/python/python-packages.txt
 RUN jupyter contrib nbextension install --system
 RUN jupyter nbextension enable --py widgetsnbextension
 
@@ -24,10 +24,10 @@ RUN jupyter labextension install @aquirdturtle/collapsible_headings @jupyterlab/
 # Install R and packages (precompiled if possible)
 RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-key '95C0FAF38DB3CCAD0C080A7BDC78B2DDEABC47B7'
 RUN echo "deb http://cloud.r-project.org/bin/linux/debian bullseye-cran40/" | tee -a /etc/apt/sources.list
-RUN apt-get update && apt-get install -y --no-install-recommends r-base-dev=4.1.2-1~bullseyecran.0
-RUN apt-get install -y --no-install-recommends r-cran-devtools r-cran-gam r-cran-rcolorbrewer r-cran-biocmanager r-cran-irkernel
+RUN apt-get update && apt-get install -y --no-install-recommends r-base-dev
+RUN apt-get install -y --no-install-recommends r-cran-devtools r-cran-gam r-cran-rcolorbrewer r-cran-biocmanager r-cran-irkernel r-cran-lme4
 RUN apt-get install -y --no-install-recommends r-bioc-scran r-bioc-monocle r-bioc-complexheatmap r-bioc-limma r-bioc-dropletutils
-RUN Rscript -e "BiocManager::install(c('MAST','slingshot','clusterExperiment'), version = '3.14')"
+RUN Rscript -e "BiocManager::install(c('MAST','slingshot','clusterExperiment'))"
 RUN Rscript -e 'writeLines(capture.output(sessionInfo()), "../package_versions_r.txt")' --default-packages=scran,RColorBrewer,slingshot,monocle,gam,clusterExperiment,ggplot2,plyr,MAST,DropletUtils,IRkernel
 
 # Install python-R interoperability packages
@@ -44,7 +44,7 @@ RUN apt-get install -y --no-install-recommends r-bioc-edger
 
 # Fabi's section
 RUN apt-get install -y --no-install-recommends freebayes parallel libhts-dev
-RUN pip install --no-cache-dir -U pegasuspy vireoSNP PyVCF scSplit
+RUN pip install --no-cache-dir -U pegasuspy vireoSNP PyVCF3 scSplit
 RUN apt-get install -y --no-install-recommends r-cran-seurat
 ## cellsnp-lite (requires htslib)
 WORKDIR /opt/cellsnp
