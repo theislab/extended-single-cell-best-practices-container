@@ -44,7 +44,7 @@ RUN apt-get install -y --no-install-recommends r-bioc-edger
 
 # Fabi's section
 RUN apt-get install -y --no-install-recommends freebayes parallel libhts-dev
-RUN pip install --no-cache-dir -U pegasuspy vireoSNP PyVCF scSplit
+RUN pip install --no-cache-dir -U pegasuspy vireoSNP PyVCF3 scSplit
 RUN apt-get install -y --no-install-recommends r-cran-seurat
 ## cellsnp-lite (requires htslib)
 WORKDIR /opt/cellsnp
